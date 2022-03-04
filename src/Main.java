@@ -83,11 +83,11 @@ public class Main {
 
     public static void hmacGeneration(String message, String key) {
         try {
-            Mac hmac = Mac.getInstance("HmacSHA512");
-            SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "SHA-512");
+            Mac hmac = Mac.getInstance("HmacSHA1");
+            SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "SHA-1");
             hmac.init(keySpec);
             byte[] resultat = hmac.doFinal(message.getBytes());
-//            System.out.println(Arrays.toString(resultat));
+            //System.out.println(Arrays.toString(resultat));
             HexFormat hexa = HexFormat.of();
             System.out.println("Le Hmac en hexadecimal sera : " + hexa.formatHex(resultat));
 
@@ -97,8 +97,8 @@ public class Main {
     }
 
     public static void main(String[] args) throws DigestException{
-//        hashage_mdp("Salut");
-//        findCollision("poisson");
+        //hashage_mdp("MessageHashe");
+        //findCollision("poisson");
         hmacGeneration("Ceci est mon premier HMAC SHA1", "CleCompliquee");
 
     }
