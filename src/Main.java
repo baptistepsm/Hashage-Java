@@ -1,8 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigInteger;
+import java.net.http.WebSocketHandshakeException;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
+import java.util.Arrays;
+import java.util.HexFormat;
 import java.util.Scanner;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 public class Main {
 
@@ -15,7 +21,7 @@ public class Main {
             while (hashed.length() < 32) {
                 hashed = "0" + hashed;
             }
-            System.out.println(hashed);
+            System.out.println("Votre mot hashé est : " + hashed);
         } catch (NoSuchAlgorithmException noSuchAlgorithmException) {
             throw new DigestException("erreur Digest");
         }
@@ -75,10 +81,25 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws DigestException{
-        hashage_mdp("poisson");
-        findCollision("poisson");
+    public static void hmacGeneration(String message, String key) {
+        try {
+            Mac hmac = Mac.getInstance("HmacSHA512");
+            SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "SHA-512");
+            hmac.init(keySpec);
+            byte[] resultat = hmac.doFinal(message.getBytes());
+//            System.out.println(Arrays.toString(resultat));
+            HexFormat hexa = HexFormat.of();
+            System.out.println("Le Hmac en hexadecimal sera : " + hexa.formatHex(resultat));
 
+        }catch (InvalidKeyException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) throws DigestException{
+//        hashage_mdp("Salut");
+//        findCollision("poisson");
+        hmacGeneration("Ceci est mon premier HMAC SHA1", "CleCompliquee");
 
     }
 
